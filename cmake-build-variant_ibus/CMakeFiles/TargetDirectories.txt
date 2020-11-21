@@ -1,0 +1,5 @@
+/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_ibus/CMakeFiles/edit_cache.dir
+/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_ibus/CMakeFiles/Z_DUMMY_TARGET.dir
+/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_ibus/CMakeFiles/Debug.dir
+/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_ibus/CMakeFiles/rebuild_cache.dir
+/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_ibus/CMakeFiles/Production.dir

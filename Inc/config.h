@@ -152,9 +152,13 @@
 #define FIELD_WEAK_ENA  0               // [-] Field Weakening / Phase Advance enable flag: 0 = Disabled (default), 1 = Enabled
 #define FIELD_WEAK_MAX  5               // [A] Maximum Field Weakening D axis current (only for FOC). Higher current results in higher maximum speed. Up to 10A has been tested using 10" wheels.
 #define PHASE_ADV_MAX   25              // [deg] Maximum Phase Advance angle (only for SIN). Higher angle results in higher maximum speed.
-#define FIELD_WEAK_HI   1000            // (1000, 1500] Input target High threshold for reaching maximum Field Weakening / Phase Advance. Do NOT set this higher than 1500.
-#define FIELD_WEAK_LO   750             // ( 500, 1000] Input target Low threshold for starting Field Weakening / Phase Advance. Do NOT set this higher than 1000.
-
+#define FIELD_WEAK_HI   1500            // (1000, 1500] Input target High
+// threshold for reaching maximum Field Weakening / Phase Advance. Do NOT set this higher than 1500.
+#define FIELD_WEAK_LO   1000             // ( 500, 1000] Input target Low
+// threshold for starting Field Weakening / Phase Advance. Do NOT set this higher than 1000.
+//#define INPUT_MAX MAX(1000, FIELD_WEAK_HI)   // [-] Defines the Input target maximum limitation
+//#define INPUT_MIN MIN(-1000,-FIELD_WEAK_HI)   // [-] Defines the Input target minimum limitation
+//#define INPUT_MID INPUT_MAX / 2
 // Extra functionality
 // #define STANDSTILL_HOLD_ENABLE          // [-] Flag to hold the position when standtill is reached. Only available and makes sense for VOLTAGE or TORQUE mode.
 // #define ELECTRIC_BRAKE_ENABLE           // [-] Flag to enable electric brake and replace the motor "freewheel" with a constant braking when the input torque request is 0. Only available and makes sense for TORQUE mode.
@@ -274,8 +278,8 @@
 // ############################ VARIANT_USART SETTINGS ############################
 #ifdef VARIANT_USART
   // #define SIDEBOARD_SERIAL_USART2
-  // #define CONTROL_SERIAL_USART2   // left sensor board cable, disable if ADC or PPM is used! For Arduino control check the hoverSerial.ino
-  // #define FEEDBACK_SERIAL_USART2  // left sensor board cable, disable if ADC or PPM is used!
+  #define CONTROL_SERIAL_USART2   // left sensor board cable, disable if ADC or PPM is used! For Arduino control check the hoverSerial.ino
+  #define FEEDBACK_SERIAL_USART2  // left sensor board cable, disable if ADC or PPM is used!
 
   // #define SIDEBOARD_SERIAL_USART3
   #define CONTROL_SERIAL_USART3      // right sensor board cable, disable if I2C (nunchuk or lcd) is used! For Arduino control check the hoverSerial.ino
@@ -490,8 +494,11 @@
 #ifdef VARIANT_HOVERBOARD
   #define SIDEBOARD_SERIAL_USART2       // left sensor board cable, disable if ADC or PPM is used! 
   #define FEEDBACK_SERIAL_USART2
-  #define SIDEBOARD_SERIAL_USART3       // right sensor board cable, disable if I2C (nunchuk or lcd) is used!        
-  #define FEEDBACK_SERIAL_USART3        
+//  #define SIDEBOARD_SERIAL_USART3       // right sensor board cable, disable if I2C (nunchuk or lcd) is used!
+  #define DEBUG_SERIAL_USART3
+//  #define FEEDBACK_SERIAL_USART3
+//  #define CONTROL_SERIAL_USART2
+//  #define CONTROL_SERIAL_USART3
 #endif
 // ######################## END OF VARIANT_HOVERBOARD SETTINGS #########################
 

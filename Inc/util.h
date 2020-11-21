@@ -22,6 +22,7 @@
 #define UTIL_H
 
 #include <stdint.h>
+#include "protocol.h"
 
 
 // Rx Structures USART
@@ -33,13 +34,6 @@
       uint8_t  channels[IBUS_NUM_CHANNELS*2];
       uint8_t  checksuml;
       uint8_t  checksumh;    
-    } SerialCommand;
-  #else
-    typedef struct{
-      uint16_t  start; 
-      int16_t   steer;
-      int16_t   speed;
-      uint16_t  checksum;    
     } SerialCommand;
   #endif
 #endif
@@ -88,7 +82,7 @@ void usart3_rx_check(void);
 void usart_process_debug(uint8_t *userCommand, uint32_t len);
 #endif
 #if defined(CONTROL_SERIAL_USART2) || defined(CONTROL_SERIAL_USART3)
-void usart_process_command(SerialCommand *command_in, SerialCommand *command_out, uint8_t usart_idx);
+void usart_process_command(OneWheelCommand *command_in, OneWheelCommand *command_out, uint8_t usart_idx);
 #endif
 #if defined(SIDEBOARD_SERIAL_USART2) || defined(SIDEBOARD_SERIAL_USART3)
 void usart_process_sideboard(SerialSideboard *Sideboard_in, SerialSideboard *Sideboard_out, uint8_t usart_idx);
@@ -97,11 +91,13 @@ void usart_process_sideboard(SerialSideboard *Sideboard_in, SerialSideboard *Sid
 // Sideboard functions
 void sideboardLeds(uint8_t *leds);
 void sideboardSensors(uint8_t sensors);
+// int16_t sideboardAngleToSpeed(SerialSideboard *sideboard);
 
 // Filtering Functions
 void filtLowPass32(int32_t u, uint16_t coef, int32_t *y);
 void rateLimiter16(int16_t u, int16_t rate, int16_t *y);
 void mixerFcn(int16_t rtu_speed, int16_t rtu_steer, int16_t *rty_speedR, int16_t *rty_speedL);
+void speedMixerFcn(int16_t rtu_speedL, int16_t rtu_speedR, int16_t *rty_speedR, int16_t *rty_speedL);
 
 // Multiple Tap Function
 typedef struct {

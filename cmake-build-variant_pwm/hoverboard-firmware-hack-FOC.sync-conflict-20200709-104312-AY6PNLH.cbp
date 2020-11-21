@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="hoverboard-firmware-hack-FOC"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Z_DUMMY_TARGET">
+				<Option output="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Z_DUMMY_TARGET" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/Inc"/>
+					<Add directory="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/Src"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/CMSIS/Include"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/CMSIS/Device/ST/STM32F1xx/Include"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/STM32F1xx_HAL_Driver/Inc"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/Common"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/stlm75"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/hx8347d"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/ak4343"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/lis302dl"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/ili9320"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/st7735"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/cs43l22"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/spfd5408"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/ili9325"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/stmpe811"/>
+					<Add directory="/home/tim/.platformio/packages/toolchain-gccarmnoneeabi/arm-none-eabi/include/c++/7.2.1"/>
+					<Add directory="/home/tim/.platformio/packages/toolchain-gccarmnoneeabi/arm-none-eabi/include/c++/7.2.1/arm-none-eabi"/>
+					<Add directory="/home/tim/.platformio/packages/toolchain-gccarmnoneeabi/lib/gcc/arm-none-eabi/7.2.1/include-fixed"/>
+					<Add directory="/home/tim/.platformio/packages/toolchain-gccarmnoneeabi/lib/gcc/arm-none-eabi/7.2.1/include"/>
+					<Add directory="/home/tim/.platformio/packages/toolchain-gccarmnoneeabi/arm-none-eabi/include"/>
+					<Add directory="/home/tim/.platformio/packages/tool-unity"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/10/../../../../include/c++/10"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/10/../../../../include/c++/10/x86_64-redhat-linux"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/10/../../../../include/c++/10/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/10/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 Z_DUMMY_TARGET"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Z_DUMMY_TARGET/fast">
+				<Option output="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Z_DUMMY_TARGET" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/Inc"/>
+					<Add directory="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/Src"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/CMSIS/Include"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/CMSIS/Device/ST/STM32F1xx/Include"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/STM32F1xx_HAL_Driver/Inc"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/Common"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/stlm75"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/hx8347d"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/ak4343"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/lis302dl"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/ili9320"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/st7735"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/cs43l22"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/spfd5408"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/ili9325"/>
+					<Add directory="/home/tim/.platformio/packages/framework-stm32cube/f1/Drivers/BSP/Components/stmpe811"/>
+					<Add directory="/home/tim/.platformio/packages/toolchain-gccarmnoneeabi/arm-none-eabi/include/c++/7.2.1"/>
+					<Add directory="/home/tim/.platformio/packages/toolchain-gccarmnoneeabi/arm-none-eabi/include/c++/7.2.1/arm-none-eabi"/>
+					<Add directory="/home/tim/.platformio/packages/toolchain-gccarmnoneeabi/lib/gcc/arm-none-eabi/7.2.1/include-fixed"/>
+					<Add directory="/home/tim/.platformio/packages/toolchain-gccarmnoneeabi/lib/gcc/arm-none-eabi/7.2.1/include"/>
+					<Add directory="/home/tim/.platformio/packages/toolchain-gccarmnoneeabi/arm-none-eabi/include"/>
+					<Add directory="/home/tim/.platformio/packages/tool-unity"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/10/../../../../include/c++/10"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/10/../../../../include/c++/10/x86_64-redhat-linux"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/10/../../../../include/c++/10/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-redhat-linux/10/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 Z_DUMMY_TARGET/fast"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Debug">
+				<Option working_dir="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 Debug"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="Production">
+				<Option working_dir="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 Production"/>
+					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/cmake-build-variant_pwm/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/Src/BLDC_controller.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/Src/BLDC_controller_data.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/Src/bldc.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/Src/comms.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/Src/control.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/Src/eeprom.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/Src/hd44780.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/Src/main.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/Src/pcf8574.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/Src/setup.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/Src/stm32f1xx_it.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/Src/system_stm32f1xx.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/Src/util.c">
+			<Option target="Z_DUMMY_TARGET"/>
+		</Unit>
+		<Unit filename="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/tim/Projects/hoverboard/hoverboard-firmware-hack-FOC/CMakeListsPrivate.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
