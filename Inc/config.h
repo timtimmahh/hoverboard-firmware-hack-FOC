@@ -11,7 +11,7 @@
 // or use VARIANT environment variable for example like "make -e VARIANT=VARIANT_NUNCHUK". Select only one at a time.
 #if !defined(PLATFORMIO)
   //#define VARIANT_ADC         // Variant for control via ADC input
-  //#define VARIANT_USART       // Variant for Serial control via USART3 input
+//  #define VARIANT_USART       // Variant for Serial control via USART3 input
   //#define VARIANT_NUNCHUK     // Variant for Nunchuk controlled vehicle build
   //#define VARIANT_PPM         // Variant for RC-Remote with PPM-Sum Signal
   //#define VARIANT_PWM         // Variant for RC-Remote with PWM Signal
@@ -27,6 +27,9 @@
 // ############################### DO-NOT-TOUCH SETTINGS ###############################
 #define PWM_FREQ            16000     // PWM frequency in Hz / is also used for buzzer
 #define DEAD_TIME              48     // PWM deadtime
+
+
+
 #ifdef VARIANT_TRANSPOTTER
   #define DELAY_IN_MAIN_LOOP    2
 #else
@@ -69,15 +72,15 @@
 #define BAT_CALIB_REAL_VOLTAGE  3970      // input voltage measured by multimeter (multiplied by 100). In this case 43.00 V * 100 = 4300
 #define BAT_CALIB_ADC           1492      // adc-value measured by mainboard (value nr 5 on UART debug output)
 #define BAT_CELLS               10        // battery number of cells. Normal Hoverboard battery: 10s
-#define BAT_LVL2_ENABLE         0         // to beep or not to beep, 1 or 0
+#define BAT_LVL2_ENABLE         1        // to beep or not to beep, 1 or 0
 #define BAT_LVL1_ENABLE         1         // to beep or not to beep, 1 or 0
 #define BAT_BLINK_INTERVAL      80        // battery led blink interval (80 loops * 5ms ~= 400ms)
-#define BAT_LVL5                (390 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Green blink:  no beep
-#define BAT_LVL4                (380 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Yellow:       no beep
-#define BAT_LVL3                (370 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Yellow blink: no beep 
-#define BAT_LVL2                (360 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Red:          gently beep at this voltage level. [V*100/cell]. In this case 3.60 V/cell
-#define BAT_LVL1                (350 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // Red blink:    fast beep. Your battery is almost empty. Charge now! [V*100/cell]. In this case 3.50 V/cell
-#define BAT_DEAD                (337 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE    // All leds off: undervoltage poweroff. (while not driving) [V*100/cell]. In this case 3.37 V/cell
+#define BAT_LVL5                ((390 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE)    // Green blink:  no beep
+#define BAT_LVL4                ((380 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE)    // Yellow:       no beep
+#define BAT_LVL3                ((370 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE)    // Yellow blink: no beep
+#define BAT_LVL2                ((360 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE)    // Red:          gently beep at this voltage level. [V*100/cell]. In this case 3.60 V/cell
+#define BAT_LVL1                ((350 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE)    // Red blink:    fast beep. Your battery is almost empty. Charge now! [V*100/cell]. In this case 3.50 V/cell
+#define BAT_DEAD                ((337 * BAT_CELLS * BAT_CALIB_ADC) / BAT_CALIB_REAL_VOLTAGE)    // All leds off: undervoltage poweroff. (while not driving) [V*100/cell]. In this case 3.37 V/cell
 // ######################## END OF BATTERY ###############################
 
 
@@ -140,7 +143,8 @@
 
 // Control selections
 #define CTRL_TYP_SEL    FOC_CTRL        // [-] Control type selection: COM_CTRL, SIN_CTRL, FOC_CTRL (default)
-#define CTRL_MOD_REQ    VLT_MODE        // [-] Control mode request: OPEN_MODE, VLT_MODE (default), SPD_MODE, TRQ_MODE. Note: SPD_MODE and TRQ_MODE are only available for CTRL_FOC!
+#define CTRL_MOD_REQ    TRQ_MODE        // [-] Control mode request: OPEN_MODE, VLT_MODE (default),
+// SPD_MODE, TRQ_MODE. Note: SPD_MODE and TRQ_MODE are only available for CTRL_FOC!
 #define DIAG_ENA        1               // [-] Motor Diagnostics enable flag: 0 = Disabled, 1 = Enabled (default)
 
 // Limitation settings
@@ -198,7 +202,6 @@
 // #define CRUISE_CONTROL_SUPPORT
 // #define SUPPORT_BUTTONS_LEFT              // Use button1 (Blue Left cable)  to activate/deactivate Cruise Control
 // #define SUPPORT_BUTTONS_RIGHT             // Use button1 (Blue Right cable) to activate/deactivate Cruise Control
-
 // ######################### END OF CRUISE CONTROL SETTINGS ##########################
 
 
@@ -234,6 +237,7 @@
   //#define DEBUG_SERIAL_SERVOTERM
   #define DEBUG_SERIAL_ASCII
 #endif
+
 // ########################### END OF DEBUG SERIAL ############################
 
 
@@ -262,7 +266,7 @@
   #define INPUT1_MID            0         // mid ADC1-value while poti at minimum-position (ADC1_MIN - ADC1_MAX)
   #define INPUT1_MAX            4095      // max ADC1-value while poti at maximum-position (0 - 4095)
   #define INPUT1_DEADBAND       0         // How much of the center position is considered 'center' (100 = values -100 to 100 are considered 0)
-  
+
   #define INPUT2_TYPE           3         // 0:Disabled, 1:Normal Pot, 2:Middle Resting Pot, 3:Auto-detect
   #define INPUT2_MIN            0         // min ADC2-value while poti at minimum-position (0 - 4095)
   #define INPUT2_MID            0         // mid ADC2-value while poti at minimum-position (ADC2_MIN - ADC2_MAX)
@@ -286,13 +290,13 @@
   #define FEEDBACK_SERIAL_USART3     // right sensor board cable, disable if I2C (nunchuk or lcd) is used!
   // Min / Max values of each channel (use DEBUG to determine these values)
   #define INPUT1_TYPE        3       // 0:Disabled, 1:Normal Pot, 2:Middle Resting Pot, 3:Auto-detect
-  #define INPUT1_MIN        -1000    // (-1000 - 0)
+  #define INPUT1_MIN        (-1000)    // (-1000 - 0)
   #define INPUT1_MID         0
   #define INPUT1_MAX         1000    // (0 - 1000)
   #define INPUT1_DEADBAND    0       // How much of the center position is considered 'center' (100 = values -100 to 100 are considered 0)
   
   #define INPUT2_TYPE        3       // 0:Disabled, 1:Normal Pot, 2:Middle Resting Pot, 3:Auto-detect
-  #define INPUT2_MIN        -1000    // (-1000 - 0)
+  #define INPUT2_MIN        (-1000)    // (-1000 - 0)
   #define INPUT2_MID         0
   #define INPUT2_MAX         1000    // (0 - 1000)
   #define INPUT2_DEADBAND    0       // How much of the center position is considered 'center' (100 = values -100 to 100 are considered 0)
@@ -318,7 +322,7 @@
   #define INPUT1_MID         0
   #define INPUT1_MAX         1024   // (0 - 1024)
   #define INPUT1_DEADBAND    0      // How much of the center position is considered 'center' (100 = values -100 to 100 are considered 0)
-  
+
   #define INPUT2_TYPE        2      // 0:Disabled, 1:Normal Pot, 2:Middle Resting Pot, 3:Auto-detect
   #define INPUT2_MIN        -1024   // (-1024 - 0)
   #define INPUT2_MID         0
@@ -355,7 +359,7 @@
   #define INPUT1_MID         0
   #define INPUT1_MAX         1000     // (0 - 1000)
   #define INPUT1_DEADBAND    100      // How much of the center position is considered 'center' (100 = values -100 to 100 are considered 0)
-  
+
   #define INPUT2_TYPE        3        // 0:Disabled, 1:Normal Pot, 2:Middle Resting Pot, 3:Auto-detect
   #define INPUT2_MIN        -1000     // (-1000 - 0)
   #define INPUT2_MID         0
@@ -387,13 +391,13 @@
   #define INPUT1_MID         0
   #define INPUT1_MAX         1000     // (0 - 1000)
   #define INPUT1_DEADBAND    100      // How much of the center position is considered 'center' (100 = values -100 to 100 are considered 0)
-  
+
   #define INPUT2_TYPE        3        // 0:Disabled, 1:Normal Pot, 2:Middle Resting Pot, 3:Auto-detect
   #define INPUT2_MIN        -1000     // (-1000 - 0)
   #define INPUT2_MID         0
   #define INPUT2_MAX         1000     // (0 - 1000)
   #define INPUT2_DEADBAND    100      // How much of the center position is considered 'center' (100 = values -100 to 100 are considered 0)
-  
+
   #define FILTER              6553    // 0.1f [-] fixdt(0,16,16) lower value == softer filter [0, 65535] = [0.0 - 1.0].
   #define SPEED_COEFFICIENT   16384   // 1.0f [-] fixdt(1,16,14) higher value == stronger. [0, 65535] = [-2.0 - 2.0]. In this case 16384 = 1.0 * 2^14
   #define STEER_COEFFICIENT   16384   // 1.0f [-] fixdt(1,16,14) higher value == stronger. [0, 65535] = [-2.0 - 2.0]. In this case 16384 = 1.0 * 2^14. If you do not want any steering, set it to 0.
@@ -408,7 +412,7 @@
 
 // ################################# VARIANT_IBUS SETTINGS ##############################
 #ifdef VARIANT_IBUS
-/* CONTROL VIA RC REMOTE WITH FLYSKY IBUS PROTOCOL 
+/* CONTROL VIA RC REMOTE WITH FLYSKY IBUS PROTOCOL
 * Connected to Right sensor board cable. Channel 1: steering, Channel 2: speed.
 */
   #define CONTROL_IBUS               // use IBUS as input
@@ -432,7 +436,7 @@
   #define INPUT1_MID         0
   #define INPUT1_MAX         1000     // (0 - 1000)
   #define INPUT1_DEADBAND    0        // How much of the center position is considered 'center' (100 = values -100 to 100 are considered 0)
-  
+
   #define INPUT2_TYPE        3        // 0:Disabled, 1:Normal Pot, 2:Middle Resting Pot, 3:Auto-detect
   #define INPUT2_MIN        -1000     // (-1000 - 0)
   #define INPUT2_MID         0
@@ -450,19 +454,19 @@
   #define CONTROL_ADC                   // use ADC as input. disable CONTROL_SERIAL_USART2, FEEDBACK_SERIAL_USART2, DEBUG_SERIAL_USART2!
   #define ADC_PROTECT_TIMEOUT 100       // ADC Protection: number of wrong / missing input commands before safety state is taken
   #define ADC_PROTECT_THRESH  200       // ADC Protection threshold below/above the MIN/MAX ADC values
-  
+
   #define INPUT1_TYPE         1         // 0:Disabled, 1:Normal Pot, 2:Middle Resting Pot, 3:Auto-detect
   #define INPUT1_MIN          1000      // min ADC1-value while poti at minimum-position (0 - 4095)
   #define INPUT1_MID          0
   #define INPUT1_MAX          2500      // max ADC1-value while poti at maximum-position (0 - 4095)
   #define INPUT1_DEADBAND     0         // How much of the center position is considered 'center' (100 = values -100 to 100 are considered 0)
-  
+
   #define INPUT2_TYPE         1         // 0:Disabled, 1:Normal Pot, 2:Middle Resting Pot, 3:Auto-detect
   #define INPUT2_MIN          500       // min ADC2-value while poti at minimum-position (0 - 4095)
   #define INPUT2_MID          0
   #define INPUT2_MAX          2200      // max ADC2-value while poti at maximum-position (0 - 4095)
   #define INPUT2_DEADBAND     0         // How much of the center position is considered 'center' (100 = values -100 to 100 are considered 0)
-  
+
   #define SPEED_COEFFICIENT   16384     // 1.0f
   #define STEER_COEFFICIENT   0         // 0.0f
   // #define INVERT_R_DIRECTION            // Invert rotation of right motor
@@ -477,15 +481,13 @@
   // #define ELECTRIC_BRAKE_ENABLE         // [-] Flag to enable electric brake and replace the motor "freewheel" with a constant braking when the input torque request is 0. Only available and makes sense for TORQUE mode.
   // #define ELECTRIC_BRAKE_MAX    100     // (0, 500) Maximum electric brake to be applied when input torque request is 0 (pedal fully released).
   // #define ELECTRIC_BRAKE_THRES  120     // (0, 500) Threshold below at which the electric brake starts engaging.
+  // Multiple tap detection: default DOUBLE Tap on Brake pedal (4 pulses)
+  #define MULTIPLE_TAP_NR       2 * 2      // [-] Define tap number: MULTIPLE_TAP_NR = number_of_taps * 2, number_of_taps = 1 (for single taping), 2 (for double tapping), 3 (for triple tapping), etc...
+  #define MULTIPLE_TAP_HI       600        // [-] Multiple tap detection High hysteresis threshold
+  #define MULTIPLE_TAP_LO       200        // [-] Multiple tap detection Low hysteresis threshold
+  #define MULTIPLE_TAP_TIMEOUT  2000       // [ms] Multiple tap detection Timeout period. The taps need to happen within this time window to be accepted.
 #endif
-
-// Multiple tap detection: default DOUBLE Tap on Brake pedal (4 pulses)
-#define MULTIPLE_TAP_NR       2 * 2      // [-] Define tap number: MULTIPLE_TAP_NR = number_of_taps * 2, number_of_taps = 1 (for single taping), 2 (for double tapping), 3 (for triple tapping), etc...
-#define MULTIPLE_TAP_HI       600        // [-] Multiple tap detection High hysteresis threshold
-#define MULTIPLE_TAP_LO       200        // [-] Multiple tap detection Low hysteresis threshold
-#define MULTIPLE_TAP_TIMEOUT  2000       // [ms] Multiple tap detection Timeout period. The taps need to happen within this time window to be accepted.
 // ######################## END OF VARIANT_HOVERCAR SETTINGS #########################
-
 
 
 // ############################ VARIANT_HOVERBOARD SETTINGS ############################
@@ -493,12 +495,26 @@
 // Balancing controller:  [TODO]
 #ifdef VARIANT_HOVERBOARD
   #define SIDEBOARD_SERIAL_USART2       // left sensor board cable, disable if ADC or PPM is used! 
-  #define FEEDBACK_SERIAL_USART2
-//  #define SIDEBOARD_SERIAL_USART3       // right sensor board cable, disable if I2C (nunchuk or lcd) is used!
-  #define DEBUG_SERIAL_USART3
-//  #define FEEDBACK_SERIAL_USART3
 //  #define CONTROL_SERIAL_USART2
+  #define FEEDBACK_SERIAL_USART2
+  #define SIDEBOARD_SERIAL_USART3       // right sensor board cable, disable if I2C (nunchuk or lcd) is used!
 //  #define CONTROL_SERIAL_USART3
+//  #define DEBUG_SERIAL_USART3
+  #define FEEDBACK_SERIAL_USART3
+  // Min / Max values of each channel (use DEBUG to determine these values)
+  #define INPUT1_TYPE        3       // 0:Disabled, 1:Normal Pot, 2:Middle Resting Pot, 3:Auto-detect
+  #define INPUT1_MIN        (-1000)    // (-1000 - 0)
+  #define INPUT1_MID         0
+  #define INPUT1_MAX         1000    // (0 - 1000)
+  #define INPUT1_DEADBAND    0       // How much of the center position is considered 'center' (100 = values -100 to 100 are considered 0)
+
+  #define INPUT2_TYPE        3       // 0:Disabled, 1:Normal Pot, 2:Middle Resting Pot, 3:Auto-detect
+  #define INPUT2_MIN        (-1000)    // (-1000 - 0)
+  #define INPUT2_MID         0
+  #define INPUT2_MAX         1000    // (0 - 1000)
+  #define INPUT2_DEADBAND    0       // How much of the center position is considered 'center' (100 = values -100 to 100 are considered 0)
+  #define INVERT_R_DIRECTION            // Invert right motor
+  #define INVERT_L_DIRECTION            // Invert left motor
 #endif
 // ######################## END OF VARIANT_HOVERBOARD SETTINGS #########################
 
@@ -536,21 +552,21 @@
     #define DEBUG_SERIAL_USART2       // left sensor cable debug
   #else
     #define DEBUG_SERIAL_USART3       // right sensor cable debug
-  #endif  
+  #endif
   // Min / Max values of each channel (use DEBUG to determine these values)
   #define INPUT1_TYPE        0        // 0:Disabled, 1:Normal Pot, 2:Middle Resting Pot, 3:Auto-detect
   #define INPUT1_MIN        -1000     // (-1000 - 0)
   #define INPUT1_MID         0
   #define INPUT1_MAX         1000     // (0 - 1000)
   #define INPUT1_DEADBAND    100      // How much of the center position is considered 'center' (100 = values -100 to 100 are considered 0)
-  
+
   #define INPUT2_TYPE        2        // 0:Disabled, 1:Normal Pot, 2:Middle Resting Pot, 3:Auto-detect
   #define INPUT2_MIN        -800      // (-1000 - 0)
   #define INPUT2_MID         0
   #define INPUT2_MAX         700      // (0 - 1000)
   #define INPUT2_DEADBAND    100      // How much of the center position is considered 'center' (100 = values -100 to 100 are considered 0)
   #define INPUT2_BRAKE      -400      // (-1000 - 0) Change this value to adjust the braking amount
-  
+
   #define FILTER              6553    // 0.1f [-] fixdt(0,16,16) lower value == softer filter [0, 65535] = [0.0 - 1.0].
   #define SPEED_COEFFICIENT   16384   // 1.0f [-] fixdt(1,16,14) higher value == stronger. [0, 65535] = [-2.0 - 2.0]. In this case 16384 = 1.0 * 2^14
   #define STEER_COEFFICIENT   0       // 1.0f [-] fixdt(1,16,14) higher value == stronger. [0, 65535] = [-2.0 - 2.0]. In this case 16384 = 1.0 * 2^14. If you do not want any steering, set it to 0.

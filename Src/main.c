@@ -137,13 +137,28 @@ static int      lastDistance = 0;
 static uint16_t transpotter_counter = 0;
 #endif
 
+#if defined(VARIANT_USART) || defined(VARIANT_HOVERBOARD)
 static int16_t speed_L, speed_R;                // local variable for speed. -1000 to 1000
-#ifndef VARIANT_TRANSPOTTER
-// static int16_t steer;                // local variable for steering. -1000 to 1000
-// static int16_t steerRateFixdt;       // local fixed-point variable for steering rate limiter
-static int16_t speedRateFixdt_L, speedRateFixdt_R;       // local fixed-point variable for speed rate limiter
-// static int32_t steerFixdt;           // local fixed-point variable for steering low-pass filter
-static int32_t speedFixdt_L, speedFixdt_R;           // local fixed-point variable for speed low-pass filter
+  #ifndef VARIANT_TRANSPOTTER
+  // local fixed-point variable for  speed rate limiter
+  static int16_t speedRateFixdt_L, speedRateFixdt_R;
+  // local fixed-point variable for speed low-pass filter
+  static int32_t speedFixdt_L, speedFixdt_R;
+  #endif
+#else
+static int16_t speed;
+  #ifndef VARIANT_TRANSPOTTER
+  // local variable for steering. -1000 to 1000
+  static int16_t steer;
+  // local fixed-point variable for steering rate limiter
+  static int16_t steerRateFixdt;
+  // local fixed-point variable for steering low-pass filter
+  static int32_t steerFixdt;
+  // local fixed-point variable for  speed rate limiter
+  static int16_t speedRateFixdt;
+  // local fixed-point variable for speed low-pass filter
+  static int32_t speedFixdt;
+  #endif
 #endif
 
 static uint32_t inactivity_timeout_counter;
@@ -206,7 +221,7 @@ int main(void) {
 	readCommand();                        // Read Command: cmd1, cmd2
 	calcAvgSpeed();                       // Calculate average measured speed: speedAvg, speedAvgAbs
 
-	#ifndef VARIANT_TRANSPOTTER
+#ifndef VARIANT_TRANSPOTTER
 	// ####### MOTOR ENABLING: Only if the initial input is very small (for SAFETY) #######
 	if (enable == 0
 		&& (!rtY_Left.z_errCode && !rtY_Right.z_errCode)
@@ -215,23 +230,27 @@ int main(void) {
 	  shortBeep(6);                     // make 2 beeps indicating the motor enable
 	  shortBeep(4);
 	  HAL_Delay(100);
+  #if defined(VARIANT_USART) || defined(VARIANT_HOVERBOARD)
 	  speedFixdt_L = 0;      // reset filters
 	  speedFixdt_R = 0;
+  #else
+	  steerFixdt = speedFixdt = 0;
+  #endif
 	  enable = 1;                       // enable motors
 	  consoleLog("-- Motors enabled --\r\n");
 	}
 
 	// ####### VARIANT_HOVERCAR #######
-	  #if defined(VARIANT_HOVERCAR) || defined(VARIANT_SKATEBOARD) || defined(ELECTRIC_BRAKE_ENABLE)
+  #if defined(VARIANT_HOVERCAR) || defined(VARIANT_SKATEBOARD) || defined(ELECTRIC_BRAKE_ENABLE)
 	uint16_t speedBlend;                                        // Calculate speed Blend, a number between [0, 1] in fixdt(0,16,15)
 	speedBlend = (uint16_t)(((CLAMP(speedAvgAbs,10,60) - 10) << 15) / 50); // speedBlend [0,1] is within [10 rpm, 60rpm]
-	  #endif
+  #endif
 
-	  #ifdef STANDSTILL_HOLD_ENABLE
+  #ifdef STANDSTILL_HOLD_ENABLE
 	standstillHold();                                           // Apply Standstill Hold functionality. Only available and makes sense for VOLTAGE or TORQUE Mode
-	  #endif
+  #endif
 
-	  #ifdef VARIANT_HOVERCAR
+  #ifdef VARIANT_HOVERCAR
 	if (speedAvgAbs < 60) {                                     // Check if Hovercar is physically close to standstill to enable Double tap detection on Brake pedal for Reverse functionality
 	  multipleTapDet(cmd1, HAL_GetTick(), &MultipleTapBrake);   // Brake pedal in this case is "cmd1" variable
 	}
@@ -240,21 +259,21 @@ int main(void) {
 	  cmd2 = (int16_t)((cmd2 * speedBlend) >> 15);
 	  cruiseControl((uint8_t)rtP_Left.b_cruiseCtrlEna);         // Cruise control deactivated by Brake pedal if it was active
 	}
-	  #endif
+  #endif
 
-	  #ifdef ELECTRIC_BRAKE_ENABLE
+  #ifdef ELECTRIC_BRAKE_ENABLE
 	electricBrake(speedBlend, MultipleTapBrake.b_multipleTap);  // Apply Electric Brake. Only available and makes sense for TORQUE Mode
-	  #endif
+  #endif
 
-	  #ifdef VARIANT_HOVERCAR
+  #ifdef VARIANT_HOVERCAR
 	if (speedAvg > 0) {                                         // Make sure the Brake pedal is opposite to the direction of motion AND it goes to 0 as we reach standstill (to avoid Reverse driving by Brake pedal)
 	  cmd1 = (int16_t)((-cmd1 * speedBlend) >> 15);
 	} else {
 	  cmd1 = (int16_t)(( cmd1 * speedBlend) >> 15);
 	}
-	  #endif
+  #endif
 
-	  #ifdef VARIANT_SKATEBOARD
+  #ifdef VARIANT_SKATEBOARD
 	if (cmd2 < 0) {                                           // When Throttle is negative, it acts as brake. This condition is to make sure it goes to 0 as we reach standstill (to avoid Reverse driving)
 	  if (speedAvg > 0) {                                     // Make sure the braking is opposite to the direction of motion
 		cmd2 = (int16_t)(( cmd2 * speedBlend) >> 15);
@@ -262,36 +281,54 @@ int main(void) {
 		cmd2 = (int16_t)((-cmd2 * speedBlend) >> 15);
 	  }
 	}
-	  #endif
+  #endif
 
 	// ####### LOW-PASS FILTER #######
+  #if defined(VARIANT_USART) || defined(VARIANT_HOVERBOARD)
 	rateLimiter16(cmd1, RATE, &speedRateFixdt_L);
 	rateLimiter16(cmd2, RATE, &speedRateFixdt_R);
 	filtLowPass32(speedRateFixdt_L >> 4, FILTER, &speedFixdt_L);
 	filtLowPass32(speedRateFixdt_R >> 4, FILTER, &speedFixdt_R);
 	speed_L = (int16_t)(speedFixdt_L >> 16);  // convert fixed-point to integer
 	speed_R = (int16_t)(speedFixdt_R >> 16);  // convert fixed-point to integer
+  #else
+	rateLimiter16(cmd1, RATE, &steerRateFixdt);
+	rateLimiter16(cmd2, RATE, &speedRateFixdt);
+	filtLowPass32(steerRateFixdt >> 4, FILTER, &steerFixdt);
+	filtLowPass32(speedRateFixdt >> 4, FILTER, &speedFixdt);
+	steer = (int16_t)(steerFixdt >> 16);  // convert fixed-point to integer
+	speed = (int16_t)(speedFixdt >> 16);  // convert fixed-point to integer
+  #endif
 
 	// ####### VARIANT_HOVERCAR #######
-	  #ifdef VARIANT_HOVERCAR
+  #ifdef VARIANT_HOVERCAR
 	if (!MultipleTapBrake.b_multipleTap) {  // Check driving direction
 	  speed = steer + speed;                // Forward driving: in this case steer = Brake, speed = Throttle
 	} else {
 	  speed = steer - speed;                // Reverse driving: in this case steer = Brake, speed = Throttle
 	}
-	  #endif
+  #endif
 
+  #ifdef VARIANT_USART
+	sideboardSensors();
+  #elif defined(VARIANT_HOVERBOARD)
+	sideboardSensors();
+  #endif
+  #if defined(VARIANT_USART) || defined(VARIANT_HOVERBOARD)
 	sideboardLeds(&sideboard_leds_L);
 	sideboardLeds(&sideboard_leds_R);
 	// ####### MIXER #######
 	// speedR = CLAMP((int)(speed * SPEED_COEFFICIENT -  steer * STEER_COEFFICIENT), INPUT_MIN, INPUT_MA);
 	// speedL = CLAMP((int)(speed * SPEED_COEFFICIENT +  steer * STEER_COEFFICIENT), INPUT_MIN, INPUT_MA);
 	speedMixerFcn(-(speed_L << 4),
-			 speed_R << 4,
-			 &speedR,
-			 &speedL);   // This function implements the equations above
+				  speed_R << 4,
+				  &speedR,
+				  &speedL);   // This function implements the equations above
+  #else
+	mixerFcn(speed << 4, steer << 4, &speedR, &speedL);
+  #endif
 
-	// ####### SET OUTPUTS (if the target change is less than +/- 100) #######
+	// ####### SET OUTPUTS (if the target change is less than +/- 25) #######
 	if ((speedL > lastSpeedL - 100 && speedL < lastSpeedL + 100)
 		&& (speedR > lastSpeedR - 100 && speedR < lastSpeedR + 100)) {
 	  #ifdef INVERT_R_DIRECTION
@@ -299,13 +336,14 @@ int main(void) {
 	  #else
 	  pwmr = -speedR;
 	  #endif
+
 	  #ifdef INVERT_L_DIRECTION
 	  pwml = -speedL;
 	  #else
 	  pwml = speedL;
 	  #endif
 	}
-	#endif
+#endif
 
 	#ifdef VARIANT_TRANSPOTTER
 	distance    = CLAMP(cmd1 - 180, 0, 4095);
@@ -366,11 +404,11 @@ int main(void) {
 		HAL_Delay(5);
 		LCD_SetLocation(&lcd, 0, 0); LCD_WriteString(&lcd, "Emergency Off!");
 		LCD_SetLocation(&lcd, 0, 1); LCD_WriteString(&lcd, "Keeper too fast.");
-		#endif
+	  #endif
 	  poweroff();
 	}
 
-	#ifdef SUPPORT_NUNCHUK
+	  #ifdef SUPPORT_NUNCHUK
 	  if (transpotter_counter % 500 == 0) {
 		if (nunchuk_connected == 0 && enable == 0) {
 		  if (Nunchuk_Ping()) {
@@ -387,7 +425,7 @@ int main(void) {
 	  }
 	  #endif
 
-		#ifdef SUPPORT_LCD
+	  #ifdef SUPPORT_LCD
 	  if (transpotter_counter % 100 == 0) {
 		if (LCDerrorFlag == 1 && enable == 0) {
 
@@ -400,103 +438,18 @@ int main(void) {
 		  // LCD_SetLocation(&lcd, 11, 1); LCD_WriteFloat(&lcd,MAX(ABS(currentR), ABS(currentL)),2);
 		}
 	  }
-		#endif
+	  #endif
 	transpotter_counter++;
 	#endif
 
-	// ####### SIDEBOARDS HANDLING #######
-	#if defined(VARIANT_HOVERBOARD)
-	float accel1 = 0, accel2 = 0;
-	bool sensorsSet_L = (Sideboard_L.sensors & (uint8_t)SENSOR1_SET)
-		&& (Sideboard_L.sensors & (uint8_t)SENSOR2_SET);
-	if (sensorsSet_L) {
-	  cmd1 = CLAMP(Sideboard_L.pitch / 100.0, -1000, 1000);
-	} else {
-	  cmd1 = 0;
-	}
-	  #ifdef SIDEBOARD_SERIAL_USART3
-	bool sensorsSet_R = (Sideboard_R.sensors & (uint8_t)SENSOR1_SET)
-		&& (Sideboard_R.sensors & (uint8_t)SENSOR2_SET);
-	if (sensorsSet_R)
-	  cmd2 = CLAMP(Sideboard_R.pitch / 100.0, -1000, 1000);
-	else
-	  cmd2 = 0;
-		#endif
-	if (enable == 0 && (!rtY_Left.z_errCode && !rtY_Right.z_errCode)) {
-	  if (((sensorsSet_L && cmd1 > -90 && cmd1 < 90)/*
-		  && (sensorsSet_R && cmd2 > -90 && cmd2 < 90)*/)) {
-		shortBeep(6);                     // make 2 beeps indicating the motor enable
-		HAL_Delay(20);                  // remove delay and 2nd beep if you need faster power on
-		shortBeep(4);
-		//
-		consoleLog("enabeling motors\r\n");
-		enable = 1;                       // enable motors
-	  }
-
-	}
-
-	if (enable == 1) {
-
-
-	  input1 = -cmd1;
-	  int16_t error1 = cmd1;
-	  int16_t dinput1 = input1 - lastCmd1;
-	  accel1 = Ki * (float)error1;
-
-	  if (!p0nE) accel1 -= Kp * (float)dinput1;
-	  float output1 = p0nE ? (Kp * (float)error1) : 0;
-	  output1 += accel1 - Kd * (float)dinput1;
-	  speedL = output1;
-
-	  input2 = -cmd2;
-	  int16_t error2 = cmd2;
-	  int16_t dinput2 = input2 - lastCmd2;
-	  accel2 = Ki * (float)error2;
-
-	  if (!p0nE) accel2 -= Kp * (float)dinput2;
-	  float output2 = p0nE ? (Kp * (float)error2) : 0;
-	  output2 += accel2 - Kd * (float)dinput2;
-	  speedR = output2;
-	} else {
-	  accel1 = accel2 = 0;
-	  speedL = speedR = 0;
-	}
-	#ifdef INVERT_R_DIRECTION
-	  pwmr = round(speedR);
-	#else
-	  pwmr = round(-speedR);
-	#endif
-	#ifdef INVERT_L_DIRECTION
-	  pwml = round(-speedL);
-	#else
-	  pwml = round(speedL);
-	#endif
-	#else
+	#ifndef VARIANT_HOVERBOARD
 	  #if defined(SIDEBOARD_SERIAL_USART2)
-		sideboardLeds(&sideboard_leds_L);
-		sideboardSensors((uint8_t)Sideboard_L.sensors);
-		speedL = sideboardAngleToSpeed(&Sideboard_L);
-
-		if (enable == 0 && (!rtY_Left.z_errCode && !rtY_Right.z_errCode) && sensorsSet) {
-		  if (cmd1 > -90 && cmd1 < 90) {
-			shortBeep(6);
-			HAL_Delay(20);
-			shortBeep(4);
-			enable = 1;
-		  }
-		}
-		if (timeoutCnt > TIMEOUT) {
-		  #ifdef INVERT_L_DIRECTION
-		  pwml = round(-speedL);
-		  #else
-		  pwml = round(speedL);
-		  #endif
-		  timeoutCnt = 0;
-		}
+	  sideboardLeds(&sideboard_leds_L);
+	  sideboardSensors((uint8_t)(Sideboard_L.sensor1 | (Sideboard_L.sensor2 << 1)));
 	  #endif
 	  #if defined(SIDEBOARD_SERIAL_USART3)
-		sideboardLeds(&sideboard_leds_R);
-		sideboardSensors((uint8_t)Sideboard_R.sensors);
+	  sideboardLeds(&sideboard_leds_R);
+	  sideboardSensors((uint8_t)(Sideboard_R.sensor1 | (Sideboard_R.sensor2 << 1)));
 	  #endif
 	#endif
 
@@ -578,33 +531,27 @@ int main(void) {
 	poweroffPressCheck();
 
 	// ####### BEEP AND EMERGENCY POWEROFF #######
+	// poweroff before mainboard burns OR low bat 3
 	if ((TEMP_POWEROFF_ENABLE && board_temp_deg_c >= TEMP_POWEROFF && speedAvgAbs < 20)
-		|| (batVoltage < BAT_DEAD
-			&& speedAvgAbs < 20)) {  // poweroff before mainboard burns OR low bat 3
+		|| (batVoltage < BAT_DEAD && speedAvgAbs < 20)) {
 	  poweroff();
-	} else if (rtY_Left.z_errCode
-		|| rtY_Right.z_errCode) {     // disable motors and beep in case of Motor error - fast beep
+
+	} else if (rtY_Left.z_errCode || rtY_Right.z_errCode) { // disable motors and beep in case of Motor error - fast beep
 	  enable = 0;
 	  buzzerFreq = 8;
 	  buzzerPattern = 1;
-	} /*else if (timeoutFlagADC
-		|| timeoutFlagSerial
-		|| timeoutCnt
-			> TIMEOUT) { // beep in case of ADC timeout, Serial timeout or General timeout - fast beep
-	  buzzerFreq = 24;
-	  buzzerPattern = 1;
-	}*/ else if (TEMP_WARNING_ENABLE
-		&& board_temp_deg_c >= TEMP_WARNING) {  // beep if mainboard gets hot
+	} else if (TEMP_WARNING_ENABLE && board_temp_deg_c >= TEMP_WARNING) { // beep if mainboard gets hot
 	  buzzerFreq = 4;
 	  buzzerPattern = 1;
-	} else if (BAT_LVL1_ENABLE && batVoltage < BAT_LVL1) {      // low bat 1: fast beep
+	} else if (BAT_LVL1_ENABLE && batVoltage < BAT_LVL1) { // low bat 1: fast beep
 	  buzzerFreq = 5;
 	  buzzerPattern = 6;
-	} else if (BAT_LVL2_ENABLE && batVoltage < BAT_LVL2) {      // low bat 2: slow beep
+	} else if (BAT_LVL2_ENABLE && batVoltage < BAT_LVL2) { // low bat 2: slow beep
 	  buzzerFreq = 5;
 	  buzzerPattern = 42;
 	} else if (BEEPS_BACKWARD
-		&& ((speed_L < -50 && speed_R < -50 && speedAvg < 0) || MultipleTapBrake.b_multipleTap)) {  // backward beep
+		&& ((speedL < -50 && speedR < -50 && speedAvg < 0)
+			|| MultipleTapBrake.b_multipleTap)) {  // backward beep
 	  buzzerFreq = 5;
 	  buzzerPattern = 1;
 	  backwardDrive = 1;

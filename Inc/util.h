@@ -24,28 +24,8 @@
 #include <stdint.h>
 #include "protocol.h"
 
-
-// Rx Structures USART
-#if defined(CONTROL_SERIAL_USART2) || defined(CONTROL_SERIAL_USART3)
-  #ifdef CONTROL_IBUS    
-    typedef struct{
-      uint8_t  start;
-      uint8_t  type; 
-      uint8_t  channels[IBUS_NUM_CHANNELS*2];
-      uint8_t  checksuml;
-      uint8_t  checksumh;    
-    } SerialCommand;
-  #endif
-#endif
 #if defined(SIDEBOARD_SERIAL_USART2) || defined(SIDEBOARD_SERIAL_USART3)
-    typedef struct{
-      uint16_t	start;
-      int16_t  	roll;
-      int16_t  	pitch;
-      int16_t  	yaw;
-      uint16_t  sensors;
-      uint16_t 	checksum;
-    } SerialSideboard;
+#define SENSORS_PRESSED(sideboard) ((sideboard).sensor1 || (sideboard).sensor2)
 #endif
 
 // Initialization Functions
@@ -60,8 +40,15 @@ void shortBeep(uint8_t freq);
 void shortBeepMany(uint8_t cnt, int8_t dir);
 void longBeep(uint8_t freq);
 void calcAvgSpeed(void);
-int  addDeadBand(int16_t u, int16_t type, int16_t deadBand, int16_t in_min, int16_t in_mid, int16_t in_max, int16_t out_min, int16_t out_max);
-int  checkInputType(int16_t min, int16_t mid, int16_t max);
+int addDeadBand(int16_t u,
+				int16_t type,
+				int16_t deadBand,
+				int16_t in_min,
+				int16_t in_mid,
+				int16_t in_max,
+				int16_t out_min,
+				int16_t out_max);
+int checkInputType(int16_t min, int16_t mid, int16_t max);
 void adcCalibLim(void);
 void updateCurSpdLim(void);
 void saveConfig(void);
@@ -85,26 +72,42 @@ void usart_process_debug(uint8_t *userCommand, uint32_t len);
 void usart_process_command(OneWheelCommand *command_in, OneWheelCommand *command_out, uint8_t usart_idx);
 #endif
 #if defined(SIDEBOARD_SERIAL_USART2) || defined(SIDEBOARD_SERIAL_USART3)
-void usart_process_sideboard(SerialSideboard *Sideboard_in, SerialSideboard *Sideboard_out, uint8_t usart_idx);
+void usart_process_sideboard(SerialSideboard *Sideboard_in,
+							 SerialSideboard *Sideboard_out,
+							 uint8_t usart_idx);
 #endif
 
 // Sideboard functions
 void sideboardLeds(uint8_t *leds);
+#if defined(VARIANT_USART) || defined(VARIANT_HOVERBOARD)
+void sideboardSensors();
+//#elif defined(VARIANT_HOVERBOARD)
+//void sideboardSensors(enum SideboardSide side);
+#else
 void sideboardSensors(uint8_t sensors);
+#endif
+void sideboardSensorBeep(bool sensor1,
+						 bool sensor2,
+						 bool *sensor1_prev,
+						 bool *sensor2_prev);
+
 // int16_t sideboardAngleToSpeed(SerialSideboard *sideboard);
 
 // Filtering Functions
 void filtLowPass32(int32_t u, uint16_t coef, int32_t *y);
 void rateLimiter16(int16_t u, int16_t rate, int16_t *y);
 void mixerFcn(int16_t rtu_speed, int16_t rtu_steer, int16_t *rty_speedR, int16_t *rty_speedL);
-void speedMixerFcn(int16_t rtu_speedL, int16_t rtu_speedR, int16_t *rty_speedR, int16_t *rty_speedL);
+void speedMixerFcn(int16_t rtu_speedL,
+				   int16_t rtu_speedR,
+				   int16_t *rty_speedR,
+				   int16_t *rty_speedL);
 
 // Multiple Tap Function
 typedef struct {
-  uint32_t 	t_timePrev;
-  uint8_t 	z_pulseCntPrev;
-  uint8_t 	b_hysteresis;
-  uint8_t 	b_multipleTap;
+  uint32_t t_timePrev;
+  uint8_t z_pulseCntPrev;
+  uint8_t b_hysteresis;
+  uint8_t b_multipleTap;
 } MultipleTap;
 void multipleTapDet(int16_t u, uint32_t timeNow, MultipleTap *x);
 

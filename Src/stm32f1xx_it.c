@@ -236,7 +236,7 @@ void DMA1_Channel5_IRQHandler(void)
 void EXTI3_IRQHandler(void)
 {
   __HAL_GPIO_EXTI_CLEAR_IT(PPM_PIN);
-  PPM_ISR_Callback();    
+  PPM_ISR_Callback();
 }
 #endif
 #ifdef CONTROL_PPM_RIGHT
@@ -251,7 +251,7 @@ void EXTI15_10_IRQHandler(void)
 
 #ifdef CONTROL_PWM_LEFT
 void EXTI2_IRQHandler(void)
-{    
+{
   __HAL_GPIO_EXTI_CLEAR_IT(PWM_PIN_CH1);
   PWM_ISR_CH1_Callback();
 }
@@ -259,7 +259,7 @@ void EXTI2_IRQHandler(void)
 void EXTI3_IRQHandler(void)
 {
   __HAL_GPIO_EXTI_CLEAR_IT(PWM_PIN_CH2);
-  PWM_ISR_CH2_Callback();    
+  PWM_ISR_CH2_Callback();
 }
 #endif
 #ifdef CONTROL_PWM_RIGHT
